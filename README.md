@@ -16,3 +16,7 @@ java Do
 ```
 
 In ide, run the Do.java file
+
+### ABOUT
+
+Actually, this is a java assessment from univercity of Glasgow in 2022-2023.
