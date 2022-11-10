@@ -11,12 +11,8 @@
 In terminal
 
 ```bash
-javac Do.java
-java Do
+javac Main.java
+java Main
 ```
 
-In ide, run the Do.java file
-
-### ABOUT
-
-Actually, this is a java assessment from the univercity of Glasgow in 2022-2023.
+In ide, run the Main.java file

@@ -1,70 +1,58 @@
 public class Battleship {
-    
-    /*
-     * Battleship is the super class of SmallBattleship, MediumBattleship and LargeBattleship
-     */
 
-    protected boolean is_sunk = false;
-    protected int size = 2;
-    protected int health = 2;
-    protected Square[] squares;
+    protected boolean is_sunk = false;            //Whether it is sunk.
+    protected int health = 2;                     //The remaining health (how many more hits it can take before sinking)
+    protected int size = 2;                       //The size of the ship.
+    protected Square[] squares = null;            //The sqaures this battleship takes.
 
-    //for sub class
-    public Battleship(){}
+    //A constructor of a Battleship object.
+    public Battleship(Square[] squares) {
 
-    /*
-     * input the size and squares
-     * set these squares to ship
-     */
-    public Battleship(int size, Square[] squares) throws Exception  {
+        this.size = squares.length;               //Set the size of the ship.
+        this.is_sunk = false;                     //Set this ship is not sunk.
+        this.health = this.size;                  //Set the health of the ship.
+        this.squares = squares;                   //Set the squares of the ship.
 
-        this.size = size;
-        this.is_sunk = false;
-        this.health = size;
-        this.squares = squares;
-
-        if (this.size != this.squares.length) {
-            throw new Exception();
-        }
-
-        //set squares
-        for (int i = 0; i < this.squares.length; ++i) {
-            try {
-                this.squares[i].setShip();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /*
-     * input row and column of the hit postion
-     * judge if this square has been hit
-     */
-    public boolean isHit(int row, int column) {
         for (int i = 0; i < squares.length; ++i) {
-            if (squares[i].getRow() == row && squares[i].getColumn() == column) {
-                this.health--;
-                if (this.health == 0) {
-                    is_sunk = true;
-                }
-                return true;
+            try {
+                squares[i].setShip();              //Set the square as a ship square.
+            } catch (Exception e) {
+                e.printStackTrace();               //Get the exception.
+            }
+            try {
+                squares[i].setBattleship(this);    //Set the square to refer this battleship.
+            } catch (Exception e) {
+                e.printStackTrace();               //Get the exception.
             }
         }
-        return false;
     }
 
-    /*
-     * return health
-     */
-    public int getHealth() {
-        return this.health;
-    }
-    
-    /*
-     * judge if this ship is sunk
-     */
+    //Get the is_sunt.
     public boolean isSunk() {
-        return this.is_sunk;
+        return this.is_sunk;                       //Get the is_sunk.
+    }
+
+    //Check if a shot success or not in the battleship scale.
+    public boolean check(int row, int column) {
+        if (this.isSunk() == true) {
+            return false;                          //This battleship is already sunk.
+        }
+        for (int i = 0; i < this.size; ++i) {
+            if (this.squares[i].getRow() == row && this.squares[i].getColumn() == column) {
+                if (this.squares[i].isShip() == true && this.squares[i].hasShut() == false) {
+                    try {
+                        this.squares[i].setShut(); //Set that the square has been shut.
+                    } catch (Exception e) {
+                        e.printStackTrace();       //Get the exception.
+                    }
+                    this.health--;                 //Reduce the health.
+                    if (this.health == 0) {
+                        this.is_sunk = true;       //If the health is 0, it is sunk.
+                    }
+                    return true;                   //Shot successfully, and return true.
+                }
+            }
+        }
+        return false;                              //Shot unsuccessfully, and return false.
     }
 }
